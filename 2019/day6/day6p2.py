@@ -71,5 +71,49 @@ def getDepth(N,d):
 	return N.depth
 
 traverse(com, setDepth)
-print(f"Part 1:{traverse(com, getDepth)}")
 
+def getParent(n, p=com):
+	if isinstance(n, str):
+		n = com.query(n)
+
+	if n == com:
+		return None
+
+	if n in p.children:
+		return p
+	
+	for c in p.children:
+		s = getParent(n, c)
+		if s is not None:
+			return s
+	return None
+
+
+def transfer(cNode,dNode):
+	if isinstance(cNode, str):
+		cNode = com.query(cNode)
+	if isinstance(dNode, str):
+		dNode = com.query(dNode)
+
+	if cNode == None or dNode == None:
+		return -1
+
+	chainC = []
+	cP = cNode
+	while (cP != com):
+		cP = getParent(cP)
+		chainC += [cP]
+
+	chainD = []
+	dP = dNode
+	while (dP != com):
+		dP = getParent(dP)
+		chainD += [dP]
+	joint = None
+	for p in chainC:
+		if p in chainD:
+			joint = p
+			break
+	return cNode.depth + dNode.depth - (joint.depth*2)
+output = transfer(getParent("YOU"),getParent("SAN"))
+print(f"Part 2:{output}")
