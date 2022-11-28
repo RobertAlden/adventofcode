@@ -1,0 +1,27 @@
+ test←⊃⎕NGET'test.txt' 1
+ data←⊃⎕NGET'input.txt' 1
+
+part1←{
+    gamma epsilon←2⊥¨↓(2÷⍨≢⍵)(<⍪[0.5]>)+⌿⍎¨↑⍵
+    gamma×epsilon
+}
+
+
+part2←{
+     input←↑'1'=⍵
+     f←(⊢=((2÷⍨≢)≤+/))
+     i←⍳⊃⌽⍴input
+     I←{↑(f ⍺(⊃⍤1)⍵)/↓⍵}
+     K←{↑(~f ⍺(⊃⍤1)⍵)/↓⍵}
+     OGr←i{1=≢↓⍵:2⊥∊⍵ ⋄ (1↓⍺)∇((⊃⍺)I ⍵)}input
+     CO2r←i{1=≢↓⍵:2⊥∊⍵ ⋄ (1↓⍺)∇((⊃⍺)K ⍵)}input
+     OGr×CO2r
+}
+
+⎕←'TEST DATA'
+⎕←'part 1: ',part1 test
+⎕←'part 2: ',part2 test
+
+⎕←'SOLUTIONS'
+⎕←'part 1: ',part1 data
+⎕←'part 2: ',part2 data

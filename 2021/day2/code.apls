@@ -1,0 +1,27 @@
+ test←⊃⎕NGET'test.txt' 1
+ data←⊃⎕NGET'input.txt' 1
+
+ part1←{
+     dirs←'forward' 'down' 'up'
+     (f d u)←+/dirs∘.{(⍎⊃⌽⍵)×⍺≡⊃⍵}' '∘(≠⊆⊢)¨⍵
+     f×d-u
+ }
+
+part2←{
+     dirs←'forward' 'down' 'up'
+     (f d u)←↓dirs∘.{(⍎⊃⌽⍵)×⍺≡⊃⍵}' '∘(≠⊆⊢)¨⍵
+     
+     d←+/f×+\d-u
+     h←+/f
+
+     h×d
+ }
+
+
+⎕←'TEST DATA'
+⎕←'part 1: ',part1 test
+⎕←'part 2: ',part2 test
+
+⎕←'SOLUTIONS'
+⎕←'part 1: ',part1 data
+⎕←'part 2: ',part2 data

@@ -1,0 +1,6 @@
+data←⍎¨⊃⎕NGET 'input.txt' 1
+
+⎕←'part one:'
+⎕←×/data⌷⍨⊂⊃⍸2020=∘.+⍨data
+⎕←'part two:'
+⎕←×/data⌷⍨⊂⊃⍸2020=data∘.+∘.+⍨data
