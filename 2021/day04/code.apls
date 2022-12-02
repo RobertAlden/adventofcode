@@ -1,0 +1,27 @@
+ test←⊃⎕NGET'test.txt' 1
+ data←⊃⎕NGET'input.txt' 1
+
+part1←{
+     n←⍎⊃⍵
+     b←{↑⍎¨⍵}¨⍵⊆⍨0,~{''≡⍵}¨1↓⍵
+     t←∨⍀n∘.=b
+     r←⊃⍸{∨/(⊂∨/5=+⌿⍵),(⊂∨/5=+/⍵)}¨t
+     ((⊃r)⌷n)×+/,(⊃(⊃⌽r)⌷b)×(~⊃r⌷t)
+}
+
+
+part2←{
+     n←⍎⊃⍵
+     b←{↑⍎¨⍵}¨⍵⊆⍨0,~{''≡⍵}¨1↓⍵
+     t←∨⍀n∘.=b
+     r←⊃⌽⍸<⍀{∨/(⊂∨/5=+⌿⍵),(⊂∨/5=+/⍵)}¨t
+     ((⊃r)⌷n)×+/,(⊃(⊃⌽r)⌷b)×(~⊃r⌷t)
+}
+
+⎕←'TEST DATA'
+⎕←'part 1: ',part1 test
+⎕←'part 2: ',part2 test
+
+⎕←'SOLUTIONS'
+⎕←'part 1: ',part1 data
+⎕←'part 2: ',part2 data
