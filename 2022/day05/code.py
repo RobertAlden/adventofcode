@@ -1,5 +1,5 @@
 with open('input.txt') as f:
-	data = [line for line in f.readlines()]
+    data = [line for line in f.readlines()]
 i = data.index('\n')
 stacks, instructions = data[:i], data[i + 1:]
 
@@ -12,10 +12,10 @@ stacks = ["".join([r[i] for r in stacks]).strip() for i in range(num_of_stacks)]
 instructions = [[int(n) for n in s.split()[1::2]] for s in instructions]
 
 for inst in instructions:
-	n, src, dst = inst[0], inst[1]-1, inst[2]-1
-	selection = stacks[src][:n]
-	stacks[src] = stacks[src][n:]
-	stacks[dst] = selection[::-1] + stacks[dst]
+    n, src, dst = inst[0], inst[1]-1, inst[2]-1
+    selection = stacks[src][:n]
+    stacks[src] = stacks[src][n:]
+    stacks[dst] = selection[::-1] + stacks[dst]
 
 result = "".join([s[0] for s in stacks])
 print(result)
