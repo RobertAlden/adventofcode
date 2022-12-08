@@ -1,0 +1,65 @@
+ test←⊃⎕NGET'test.txt' 1
+ data←⊃⎕NGET'input.txt' 1
+
+add←{
+     t←⍺  ⍝(t)ree  
+     l n←⍵  ⍝ (l)ocation ⍝ (n)ew file
+     d c←t  ⍝(d)ir (c)ontents
+     s f←' '(≠⊆⊢)n ⍝ (s)ize (f)ile
+     N←(f(⊂⍎s))
+     '~'≠⊃d:t
+     l≡⊃t:(d(c,(⊂N)))
+     l≢⊃t:(d ({⍵ add (l n)}¨c))
+ }
+
+mkdir←{
+     t←⍺  ⍝(t)ree
+     l n←⍵ ⍝(l)ocation  (n)ew dir name
+     d c←t  ⍝(d)ir (c)ontents
+     N←((((1↓∊{'/',⍵}¨'/'(≠⊆⊢)l),'/',n)) ⍬) ⍝ (N)ew dir
+     '~'≠⊃d:t
+     l≡⊃t  :(d(c,(⊂N)))
+     l≢⊃t  : (d ({⍵ mkdir (l n)}¨c))
+ }
+
+cd←{
+     l←⍺  ⍝ (l)ocation
+     '..'≡⍵:(1↓∊{'/',⍵}¨¯1↓'/'(≠⊆⊢)l)
+     l≡⍵:l
+     (,'/')≡⍵:l
+     (l,'/',⍵)
+ }
+
+ main←{
+     i←⊃⍵   ⍝ (i)nput
+     t l←⍺  ⍝ (t)ree  (l)ocation
+     0=≢⍵:⍺
+     ⊃'$ cd '⍷i:(t(l cd(5↓i)))∇(1↓⍵)
+     ⊃'dir '⍷i:((t mkdir(l(4↓i)))l)∇(1↓⍵)
+     ∨/⎕D⍷⍨⊃i:((t add(l i))l)∇(1↓⍵)
+     (t l)∇(1↓⍵)
+ }
+
+dirs←{
+     ⍺←⍬
+     d c←⍵
+     '~'≡⊃d:((⍺,d)∘dirs¨c)
+     ⍺
+ }
+
+ fsize←{
+     ⍺←⍬
+     d c←⍵
+     '~'≡⊃d:((⍺,c)∘∇¨c)
+     +/c
+ }
+
+(((,'~') ⍬) (,'~')) main test
+
+⎕←'TEST DATA'
+⎕←'part 1: ',part1 test
+⎕←'part 2: ',part2 test
+
+⎕←'SOLUTIONS'
+⎕←'part 1: ',part1 data
+⎕←'part 2: ',part2 data
