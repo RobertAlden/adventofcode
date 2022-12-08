@@ -1,0 +1,20 @@
+test←⊃⎕NGET'test.txt' 1
+data←⊃⎕NGET'input.txt' 1
+
+ attempt2←{
+     i←⊃⍵   ⍝ (i)nput
+     ⍺←⍬
+     0=≢⍵:⍺
+     ⊃'$ cd '⍷i:(⍺,(⊂∇((((4↓i){⍵⍳⊂'$ cd ',⍺}⍵)-1)↓⍵)))∇(1↓⍵)
+     ⊃'dir '⍷i:⍺ ∇(1↓⍵)
+     ∨/⎕D⍷⍨⊃i:(⍺,({⍎⍵/⍨⎕D∊⍨⍵}i))∇(1↓⍵)
+     ⍺ ∇(1↓⍵)
+ }
+
+⎕←'TEST DATA'
+⎕←'part 1: ',+/1e5{⍵/⍨⍺>⍵}∊calc fsize ⊃(((,'~') ⍬) (,'~')) main test
+⎕←'part 2: ',makeroom∊calc fsize ⊃(((,'~') ⍬) (,'~')) main test
+
+⎕←'SOLUTIONS'
+⎕←'part 1: ',+/1e5{⍵/⍨⍺>⍵}∊calc fsize ⊃(((,'~') ⍬) (,'~')) main data
+⎕←'part 2: ',makeroom∊calc fsize ⊃(((,'~') ⍬) (,'~')) main data

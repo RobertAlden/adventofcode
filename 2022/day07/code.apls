@@ -61,8 +61,6 @@ makeroom←{
      ⌊/⍵/⍨target<⍵+remaining
  }
 
-tree←⊃(((,'~') ⍬) (,'~')) main test
-
 ⎕←'TEST DATA'
 ⎕←'part 1: ',+/1e5{⍵/⍨⍺>⍵}∊calc fsize ⊃(((,'~') ⍬) (,'~')) main test
 ⎕←'part 2: ',makeroom∊calc fsize ⊃(((,'~') ⍬) (,'~')) main test
@@ -70,5 +68,3 @@ tree←⊃(((,'~') ⍬) (,'~')) main test
 ⎕←'SOLUTIONS'
 ⎕←'part 1: ',+/1e5{⍵/⍨⍺>⍵}∊calc fsize ⊃(((,'~') ⍬) (,'~')) main data
 ⎕←'part 2: ',makeroom∊calc fsize ⊃(((,'~') ⍬) (,'~')) main data
-
-
