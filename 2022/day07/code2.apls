@@ -5,16 +5,30 @@ data←⊃⎕NGET'input.txt' 1
      i←⊃⍵   ⍝ (i)nput
      ⍺←⍬
      0=≢⍵:⍺
-     ⊃'$ cd '⍷i:(⍺,(⊂∇((((4↓i){⍵⍳⊂'$ cd ',⍺}⍵)-1)↓⍵)))∇(1↓⍵)
-     ⊃'dir '⍷i:⍺ ∇(1↓⍵)
+     ⊃'dir '⍷i:(⍺,(⊂∇((((4↓i){⍵⍳⊂'$ cd ',⍺}⍵))↓⍵)))∇(1↓⍵)
+     ⊃'$ cd '⍷i:⍺
      ∨/⎕D⍷⍨⊃i:(⍺,({⍎⍵/⍨⎕D∊⍨⍵}i))∇(1↓⍵)
      ⍺ ∇(1↓⍵)
  }
 
+ calc←{
+     s←+/∊⍵
+     r←{0<|≡⍵:calc ⍵ ⋄ ⍬}¨⍵
+     ∊s,{⍵/⍨×≢¨⍵}r
+ }
+
+ makeroom←{
+     total_space←70000000
+     target←30000000
+     curr_space←⊃⍵
+     remaining←total_space-curr_space
+     ⌊/⍵/⍨target<⍵+remaining
+ }
+
 ⎕←'TEST DATA'
-⎕←'part 1: ',+/1e5{⍵/⍨⍺>⍵}∊calc fsize ⊃(((,'~') ⍬) (,'~')) main test
-⎕←'part 2: ',makeroom∊calc fsize ⊃(((,'~') ⍬) (,'~')) main test
+⎕←'part 1: ',+/1e5{⍵/⍨⍺>⍵} calc attempt2 1↓test
+⎕←'part 2: ',makeroom calc attempt2 1↓test
 
 ⎕←'SOLUTIONS'
-⎕←'part 1: ',+/1e5{⍵/⍨⍺>⍵}∊calc fsize ⊃(((,'~') ⍬) (,'~')) main data
-⎕←'part 2: ',makeroom∊calc fsize ⊃(((,'~') ⍬) (,'~')) main data
+⎕←'part 1: ',+/1e5{⍵/⍨⍺>⍵} calc attempt2 1↓ data
+⎕←'part 2: ',makeroom calc attempt2 1↓data
