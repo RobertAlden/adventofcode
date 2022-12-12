@@ -23,8 +23,7 @@ def drag(h, t):
     return t[0] + dx, t[1] + dy
 
 
-def silver():
-    rope_length = 2
+def silver(rope_length):
     moves = convert(data)
     rope = [(0, 0)] * rope_length
     positions = []
@@ -38,8 +37,7 @@ def silver():
     return len(positions)
 
 
-def gold():
-    rope_length = 10
+def gold(rope_length):
     moves = convert(data)
     rope = [(0, 0)] * rope_length
     positions = []
@@ -53,6 +51,6 @@ def gold():
     return len(positions)
 
 
-print(f'Silver: {silver()}')
+print(f'Silver: {silver(2)}')
 
-print(f'Gold: {gold()}')
+print(f'Gold: {gold(10)}')
