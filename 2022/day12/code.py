@@ -44,8 +44,8 @@ def gold():
     data = [[ord(c) - 96 for c in row] for row in data]
 
     paths = []
-    start = list(chain(*[[[y, x] for x, value in enumerate(row) if value == 1] for y, row in enumerate(data) if 1 in row]))
-    target = [[[y, x] for x, value in enumerate(row) if value == 27] for y, row in enumerate(data) if 27 in row][0][0]
+    targets = list(chain(*[[[y, x] for x, value in enumerate(row) if value == 1] for y, row in enumerate(data) if 1 in row]))
+    start = [[[y, x] for x, value in enumerate(row) if value == 27] for y, row in enumerate(data) if 27 in row][0][0]
 
     def bfs(_y, _x):
         visited = []
@@ -60,16 +60,16 @@ def gold():
         while len(bfs_queue) > 0:
             current_path = bfs_queue.pop(0)
             current = current_path[-1]
-            if current == target:
+            if current in targets:
                 return len(current_path) - 1
             cells = adjacent(current[0], current[1])
             cells = [cell for cell in cells if (cell not in visited) and
-                     (data[cell[0]][cell[1]] - 1) <= data[current[0]][current[1]]]
+                     (data[cell[0]][cell[1]]) <= data[current[0]][current[1]]]
             visited += cells
             bfs_queue += [current_path + [cell] for cell in cells]
         return x_range*y_range+1
 
-    return min([bfs(s[0], s[1]) for s in start])
+    return bfs(start[0], start[1])
 
 
 print(f'Silver: {silver()}')
