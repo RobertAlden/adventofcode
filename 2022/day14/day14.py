@@ -1,4 +1,5 @@
 from itertools import zip_longest, pairwise, chain, repeat
+from time import time_ns
 
 with open('input.txt') as f:
     data = [line.strip() for line in f.readlines()]
@@ -56,6 +57,8 @@ def gold():
             next_batch = []
 
 
-print(f'Silver: {silver()}')
+start = time_ns()
+print(f'Silver: {silver()}, took {(time_ns() - start) / 1_000_000_000} seconds.')
 
-print(f'Gold: {gold()}')
+start = time_ns()
+print(f'Gold: {gold()}, took {(time_ns() - start) / 1_000_000_000} seconds.')
