@@ -1,10 +1,15 @@
-from itertools import zip_longest, pairwise, chain, repeat
 from time import time_ns
+from itertools import zip_longest, pairwise, chain, repeat
+
+with open('test.txt') as f:
+    test_input = [line.strip() for line in f.readlines()]
 
 with open('input.txt') as f:
-    data = [line.strip() for line in f.readlines()]
+    real_input = [line.strip() for line in f.readlines()]
 
-data = [[tuple([int(value) for value in coordinate.split(',')]) for coordinate in line.split(' -> ')] for line in data]
+
+test_input = [[tuple([int(value) for value in vec.split(',')]) for vec in line.split(' -> ')] for line in test_input]
+real_input = [[tuple([int(value) for value in vec.split(',')]) for vec in line.split(' -> ')] for line in real_input]
 
 
 def generate_interval(start, end):
@@ -16,7 +21,7 @@ def generate_interval(start, end):
     return [start] + [(start[0]+x, start[1]+y) for x, y in zip_longest(x_values, y_values, fillvalue=0)]
 
 
-def silver():
+def silver(data):
     obstacles = frozenset(chain(*[chain(*[generate_interval(*pair) for pair in pairwise(wall)]) for wall in data]))
     sand = 0
     x, y = 500, 0
@@ -35,7 +40,7 @@ def silver():
     return sand
 
 
-def gold():
+def gold(data):
     obstacles = frozenset(chain(*[chain(*[generate_interval(*pair) for pair in pairwise(wall)]) for wall in data]))
     floor = sorted(obstacles, key=lambda p: p[1], reverse=True)[0][1]+2
     sand = 1
@@ -57,8 +62,17 @@ def gold():
             next_batch = []
 
 
+print("TEST DATA:")
 start = time_ns()
-print(f'Silver: {silver()}, took {(time_ns() - start) / 1_000_000_000} seconds.')
+print(f'Silver: {silver(test_input)}, took {(time_ns() - start) / 1_000_000_000} seconds.')
 
 start = time_ns()
-print(f'Gold: {gold()}, took {(time_ns() - start) / 1_000_000_000} seconds.')
+print(f'Gold: {gold(test_input)}, took {(time_ns() - start) / 1_000_000_000} seconds.')
+
+print("REAL DATA:")
+start = time_ns()
+print(f'Silver: {silver(real_input)}, took {(time_ns() - start) / 1_000_000_000} seconds.')
+
+start = time_ns()
+print(f'Gold: {gold(real_input)}, took {(time_ns() - start) / 1_000_000_000} seconds.')
+
