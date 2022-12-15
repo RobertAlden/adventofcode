@@ -21,44 +21,39 @@ def silver():
     x, y = 500, 0
     while True:
         options = [next_move for next_move in zip([x, x-1, x+1], repeat(y+1)) if next_move not in obstacles]
-        match options:
-            case [move, *rest]:
-                x, y = move
-                if len(floors_below := list(filter(lambda t: t[0] == x and t[1] > y, obstacles))):
-                    y = min(floors_below)[1]-1
-                else:
-                    break
-            case []:
-                obstacles = obstacles | {(x, y)}
-                sand += 1
-                x, y = 500, 0
+        if len(options) > 0:
+            x, y = options[0]
+            if len(floors_below := list(filter(lambda t: t[0] == x and t[1] > y, obstacles))):
+                y = min(floors_below)[1]-1
+            else:
+                break
+        else:
+            obstacles = obstacles | {(x, y)}
+            sand += 1
+            x, y = 500, 0
     return sand
 
 
 def gold():
-    obstacles = list(chain(*[chain(*[generate_interval(*pair) for pair in pairwise(wall)]) for wall in data]))
+    obstacles = frozenset(chain(*[chain(*[generate_interval(*pair) for pair in pairwise(wall)]) for wall in data]))
     floor = sorted(obstacles, key=lambda p: p[1], reverse=True)[0][1]+2
-    sorted_x = sorted(obstacles, key=lambda p: p[0])
-    left, right = sorted_x[0], sorted_x[-1]
-    sand = 0
-    x, y = 500, 0
-    while True:
-        options = [next_move for next_move in zip([x, x - 1, x + 1], repeat(y + 1)) if next_move not in obstacles]
-        options = [option for option in options if option[1] != floor]
-        match options:
-            case [move, *rest]:
-                x, y = move
-                if len(floors_below := list(filter(lambda t: t[0] == x and t[1] > y, obstacles))):
-                    y = min(floors_below)[1] - 1
-                else:
-                    y = floor-1
-            case []:
-                obstacles.append((x, y))
-                sand += 1
-                x, y = 500, 0
-        if (500, 0) in obstacles:
-            break
-    return sand
+    sand = 1
+    bsf_queue = [500]
+    y = 1
+    next_batch = []
+    while len(bsf_queue) > 0:
+        x = bsf_queue.pop(0)
+        potential_moves = [x, x - 1, x + 1]
+        potential_moves = [move for move in potential_moves if move not in next_batch]
+        potential_moves = [move for move in potential_moves if (move, y) not in obstacles]
+        next_batch += potential_moves
+        sand += len(potential_moves)
+        if len(bsf_queue) == 0:
+            y += 1
+            if len(next_batch) == 0 or y == floor:
+                return sand
+            bsf_queue += next_batch[:]
+            next_batch = []
 
 
 print(f'Silver: {silver()}')
