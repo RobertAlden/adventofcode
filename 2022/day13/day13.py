@@ -1,10 +1,18 @@
+from time import time_ns
 from itertools import zip_longest, pairwise
 
-with open('input.txt') as f:
-    data = [line.strip() for line in f.readlines()]
+with open('test.txt') as f:
+    test_input = [line.strip() for line in f.readlines()]
 
-data = [eval(line) for line in data if line != '']
-packets = list(zip(data[::2], data[1::2]))
+with open('input.txt') as f:
+    real_input = [line.strip() for line in f.readlines()]
+
+
+test_input = [eval(line) for line in test_input if line != '']
+test_packets = list(zip(test_input[::2], test_input[1::2]))
+
+real_input = [eval(line) for line in real_input if line != '']
+real_packets = list(zip(real_input[::2], real_input[1::2]))
 
 
 def in_order(pair):
@@ -40,12 +48,11 @@ def in_order(pair):
         return False
 
 
-def silver():
-    return sum([idx+1 for idx, val in enumerate([in_order(pair) for pair in packets]) if val])
+def silver(data):
+    return sum([idx+1 for idx, val in enumerate([in_order(pair) for pair in data]) if val])
 
 
-def gold():
-    global data
+def gold(data):
     data += [[[2]], [[6]]]
     while not all(is_sorted := [in_order(pair) for pair in pairwise(data)]):
         for i, ordered in enumerate(is_sorted):
@@ -53,6 +60,17 @@ def gold():
     return (data.index([[2]])+1) * (data.index([[6]])+1)
 
 
-print(f'Silver: {silver()}')
+print("TEST DATA:")
+start = time_ns()
+print(f'Silver: {silver(test_packets)}, took {(time_ns() - start) / 1_000_000_000} seconds.')
 
-print(f'Gold: {gold()}')
+start = time_ns()
+print(f'Gold: {gold(test_input)}, took {(time_ns() - start) / 1_000_000_000} seconds.')
+
+print("REAL DATA:")
+start = time_ns()
+print(f'Silver: {silver(real_packets)}, took {(time_ns() - start) / 1_000_000_000} seconds.')
+
+start = time_ns()
+print(f'Gold: {gold(real_input)}, took {(time_ns() - start) / 1_000_000_000} seconds.')
+
