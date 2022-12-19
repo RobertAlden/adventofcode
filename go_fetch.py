@@ -22,6 +22,8 @@ if not (file_exists := os.path.exists(file_location)):
         case 200:
             if not os.path.exists(file_location[:-9]):
                 os.makedirs(file_location[:-9])
+            with open(file_location, 'w') as f:
+                f.write(r.text)
             print(f'Retrieval succeeded.')
             if not os.path.exists(file_location[:-9] + f'day{day}.py'):
                 cmd = f'copy \"{os.getcwd()}\\{year}\\_new\\rename_me.py\" \"{os.getcwd()}\\{year}\\day{day}\\day{day}.py\"'
