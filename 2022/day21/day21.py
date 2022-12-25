@@ -72,20 +72,18 @@ def gold(data):
             value = a
         ops = {'+': '-', '-': '+', '*': '/', '/': '*'}
         operator = ops[operator]  # get inverse of operation
-        res = ""
         if (isinstance(_a, str)) and (isinstance(_c, int)):  # tree['aaaa'] = 'bbbb' * 5
             res = f'int({value}{operator}{_c})'
             tree['root'] = _a, '==', eval(res)
         elif (isinstance(_c, str)) and (isinstance(_a, int)):  # tree['aaaa'] = 5 * 'bbbb'
-            if operator == '+':  # Because - isn't commutative
-                res = f'int(-({value}{ops[operator]}{_a}))'  # Do the commutative inverse instead
-            elif operator == '*':   # Because / isn't commutative
-                res = f'int(1/({value}{ops[operator]}{_a}))'  # Do the commutative inverse instead
+            if operator == '+':  # Because - isn't commutative, handle the special case by
+                res = f'int(-({value}{ops[operator]}{_a}))'  # performing the commutative inverse instead
+            elif operator == '*':   # Because / isn't commutative, handle the special case by
+                res = f'int(1/({value}{ops[operator]}{_a}))'  # performing the commutative inverse instead
             else:
                 res = f'int({value}{operator}{_a})'
             tree['root'] = _c, '==', eval(res)
     return tree['root'][2]
-
 
 
 print("TEST DATA:")
