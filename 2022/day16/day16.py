@@ -60,20 +60,29 @@ def distances_from_node(node, graph):
 
 def silver(graph, values):
     desired_nodes = dict([node, value] for node, value in values.items() if value > 0)
-    starting_node = 'AA'
-    best_score = 0
-    time_elapsed = 0
-    for ordering in permutations(list(desired_nodes)):
-        score = []
-        distances = distances_from_node(starting_node, graph)
-        time_elapsed = distances[ordering[0]] + 1
-        score.append(max((30 - time_elapsed) * desired_nodes[ordering[0]], 0))
-        for i, node in enumerate(ordering[:-1]):
-            distances = distances_from_node(node, graph)
-            time_elapsed += distances[ordering[i+1]]+1
-            score.append(max((30-time_elapsed)*desired_nodes[ordering[i+1]], 0))
-        best_score = max(sum(score), best_score)
-    return best_score
+    current_node = 'AA'
+    steam_released = 0
+    time_remaining = 30
+    steam_lost_per_turn = sum(desired_nodes.values())
+    steam_available = steam_lost_per_turn * time_remaining
+    while time_remaining > 0 and len(desired_nodes.keys()) > 0:
+        distances = distances_from_node(current_node, graph)
+        gains = {node: values[node]*(time_remaining - (distance + 1)) for node, distance in distances.items()
+                 if node in desired_nodes.keys() and time_remaining - (distance + 1) >= 0}
+        costs = {node: steam_lost_per_turn*(distance + 1) for node, distance in distances.items()
+                 if node in desired_nodes.keys() and time_remaining - (distance + 1) >= 0}
+        net_value = {node: gains[node] - costs[node] for node in desired_nodes.keys()}
+        if len(net_value) == 0:
+            break
+        next_node = sorted(net_value.items(), key=lambda x: x[1])[-1][0]
+        steam_released += gains[next_node]
+        time_remaining -= distances[next_node] + 1
+        steam_available = steam_lost_per_turn * time_remaining
+        steam_lost_per_turn -= values[next_node]
+        current_node = next_node
+        del desired_nodes[current_node]
+
+    return steam_released
 
 
 def gold(graph, values):
