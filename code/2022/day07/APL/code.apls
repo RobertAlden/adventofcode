@@ -1,0 +1,70 @@
+ test←⊃⎕NGET'test.txt' 1
+ data←⊃⎕NGET'input.txt' 1
+
+add←{
+     t←⍺  ⍝(t)ree  
+     l n←⍵  ⍝ (l)ocation ⍝ (n)ew file
+     d c←t  ⍝(d)ir (c)ontents
+     s f←' '(≠⊆⊢)n ⍝ (s)ize (f)ile
+     N←(f(⊂⍎s))
+     '~'≠⊃d:t
+     l≡⊃t:(d(c,(⊂N)))
+     l≢⊃t:(d ({⍵ add (l n)}¨c))
+ }
+
+mkdir←{
+     t←⍺  ⍝(t)ree
+     l n←⍵ ⍝(l)ocation  (n)ew dir name
+     d c←t  ⍝(d)ir (c)ontents
+     N←((((1↓∊{'/',⍵}¨'/'(≠⊆⊢)l),'/',n)) ⍬) ⍝ (N)ew dir
+     '~'≠⊃d:t
+     l≡⊃t  :(d(c,(⊂N)))
+     l≢⊃t  : (d ({⍵ mkdir (l n)}¨c))
+ }
+
+cd←{
+     l←⍺  ⍝ (l)ocation
+     '..'≡⍵:(1↓∊{'/',⍵}¨¯1↓'/'(≠⊆⊢)l)
+     l≡⍵:l
+     (,'/')≡⍵:l
+     (l,'/',⍵)
+ }
+
+ main←{
+     i←⊃⍵   ⍝ (i)nput
+     t l←⍺  ⍝ (t)ree  (l)ocation
+     0=≢⍵:⍺
+     ⊃'$ cd '⍷i:(t(l cd(5↓i)))∇(1↓⍵)
+     ⊃'dir '⍷i:((t mkdir(l(4↓i)))l)∇(1↓⍵)
+     ∨/⎕D⍷⍨⊃i:((t add(l i))l)∇(1↓⍵)
+     (t l)∇(1↓⍵)
+ }
+
+ fsize←{
+     ⍺←⍬
+     d c←⍵
+     '~'≡⊃d:((⍺,c)∘∇¨c)
+     +/c
+ }
+
+calc←{
+     s←+/∊⍵
+     r←{0=|≡⍵:0 ⋄ 0<|≡⍵:calc ⍵}¨⍵
+     s,r
+ }
+
+makeroom←{
+     total_space←70000000
+     target←30000000
+     curr_space←⊃⍵
+     remaining←total_space-curr_space
+     ⌊/⍵/⍨target<⍵+remaining
+ }
+
+⎕←'TEST DATA'
+⎕←'part 1: ',+/1e5{⍵/⍨⍺>⍵}∊calc fsize ⊃(((,'~') ⍬) (,'~')) main test
+⎕←'part 2: ',makeroom∊calc fsize ⊃(((,'~') ⍬) (,'~')) main test
+
+⎕←'SOLUTIONS'
+⎕←'part 1: ',+/1e5{⍵/⍨⍺>⍵}∊calc fsize ⊃(((,'~') ⍬) (,'~')) main data
+⎕←'part 2: ',makeroom∊calc fsize ⊃(((,'~') ⍬) (,'~')) main data

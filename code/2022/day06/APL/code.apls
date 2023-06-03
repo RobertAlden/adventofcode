@@ -1,0 +1,21 @@
+ test←⊃⎕NGET'test.txt' 1
+ data←⊃⎕NGET'input.txt' 1
+
+part1←{
+    d←(¯1↓1↓{⍺↓⍵}⌺4)¨⍵
+    {3+⊃⍸⍵}¨{∧/∧⌿(⍳4)=⍥(∘.=⍨⊢)⍵}⍤1¨d
+}
+
+
+part2←{
+    d←(¯6↓6↓{⍺↓⍵}⌺14)¨⍵
+    {13+⊃⍸⍵}¨{∧/∧⌿(⍳14)=⍥(∘.=⍨⊢)⍵}⍤1¨d
+}
+
+⎕←'TEST DATA'
+⎕←'part 1: ',part1 test
+⎕←'part 2: ',part2 test
+
+⎕←'SOLUTIONS'
+⎕←'part 1: ',part1 data
+⎕←'part 2: ',part2 data
