@@ -1,10 +1,7 @@
 from math import lcm
 
-with open('input.txt') as f:
+with open('data/2022/day11/input-[HIDE]-.txt') as f:
     data = [line.strip() for line in f.readlines()]
-
-
-
 
 def silver():
     items = [line[len('Starting items: '):].split(', ') for line in data if line.startswith('Starting items: ')]

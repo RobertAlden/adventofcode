@@ -2,8 +2,8 @@ using BenchmarkTools, AbbreviatedStackTraces
 
 MODE = "test"
 
-test = readlines("AOC/data/2022/day1/test.txt")
-data = readlines("AOC/data/2022/day1/input-[HIDE]-.txt")
+test = readlines("data/2022/day01/test.txt")
+data = readlines("data/2022/day01/input-[HIDE]-.txt")
 
 function listSplit(data, sep)
     bool_seq = [(i == sep) for i in data]
