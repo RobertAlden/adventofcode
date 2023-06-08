@@ -2,5 +2,4 @@
 /.idea/
 /venv/
 creds.txt
-**/input.txt
-**/*-[HIDE]-*
+**/*[HIDE]*
