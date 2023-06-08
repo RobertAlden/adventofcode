@@ -3,12 +3,12 @@ using Base.Iterators: partition
 test = readlines("data/2022/day03/test.txt")
 data = readlines("data/2022/day03/input-[HIDE]-.txt")
 
-score(x::Char) = Int(x)-96 < 0 ? Int(x)-64+26 : Int(x)-96
+score(x::Char) = Int(x) - 96 < 0 ? Int(x) - 64 + 26 : Int(x) - 96
 
 function silver(data::Array{String,1})
     function solution(backpack::String)
         size = length(backpack)
-        contents = collect(partition(backpack, size÷2))
+        contents = collect(partition(backpack, size ÷ 2))
         for i ∈ contents[1]
             i ∈ contents[2] && return i
         end
@@ -26,8 +26,8 @@ function gold(data::Array{String,1})
     score.(map(solution, groups)) |> sum
 end
 
-@time @show silver(test)
-@time @show gold(test)
+@btime silver(test)
+@btime gold(test)
 
-@time @show silver(data)
-@time @show gold(data)
+@btime silver(data)
+@btime gold(data)
