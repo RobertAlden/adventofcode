@@ -4,27 +4,24 @@ export windowed, parse_into_struct, chunk_items
 
 windowed(arr, n) = @views [arr[i:(i+n-1)] for i in firstindex(arr):lastindex(arr)-n+1]
 
-function parse_into_struct(str, datatype, seps=nothing)
+function parse_into_struct(str::String, datatype, seps::String=nothing)
     if isnothing(seps)
-        seps = [' ']
+        seps = " "
     end
+
     types = [fieldtypes(datatype)...]
-    substrings = str
-    while !isempty(seps)
-        sep = popfirst!(seps)
-        substrings = split(substrings, sep)
-    end
+    substrings = collect(eachsplit(str, x -> contains(seps, x)))
+
     values = []
-    for str in substrings
-        result = tryparse(first(types), str)
+    for substring in substrings
+        result = tryparse(first(types), substring)
         isnothing(result) && continue
         popfirst!(types)
         push!(values, result)
     end
     if length(values) < length(types)
-        error("Insufficient number of valid values to \n
-               populate struct fields. \n
-               Fields: $(types), Values: $(values)")
+        error("Insufficient number of valid values to
+               populate struct fields. \nFields: $(types), Values: $(values)")
     end
     datatype(values...)
 end
