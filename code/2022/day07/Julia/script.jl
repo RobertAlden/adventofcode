@@ -9,9 +9,9 @@ function parse(data)
     contents = chunk_items(data, x -> startswith(x, "\$"))
 
     cleanup(str) = startswith(str, "dir") ? last(split(str, " ")) : first(split(str, " "))
-    contents = map(x -> cleanup.(x), contents)
+    contents = map.(cleanup, contents)
 
-    zip(dirs, contents)
+    collect(zip(dirs, contents))
 end
 
 function splitmap(f, coll)
@@ -28,15 +28,17 @@ function compute_node(tree, node)
 end
 
 function silver(data)
-    dir_tree = Dict(parse(data))
-    println(collect(keys(dir_tree)))
-    dir_sizes = map(x -> compute_node(dir_tree, x), collect(keys(dir_tree)))
-    println(dir_sizes)
-    sum(filter(x -> x <= 100000, dir_sizes))
+    dir_tree = parse(data)
+    # dir_sizes = map(x -> compute_node(dir_tree, x), dir_tree)
+    # sum(filter(x -> x <= 100000, dir_sizes))
 end
 
 function gold(data)
-
+    dir_tree = parse(data)
+    dir_sizes = sort(map(x -> compute_node(dir_tree, x), collect(keys(dir_tree))))
+    dir_capacity = 70000000
+    goal = dir_capacity - sum(dir_sizes)
+    dir_sizes[findfirst(x -> x >= goal, dir_sizes)]
 end
 
 
@@ -44,7 +46,7 @@ const test = readlines("data/2022/day07/test.txt")
 const data = readlines("data/2022/day07/input.txt")
 
 @time println(silver(test))
-@time println(gold(test))
+# @time println(gold(test))
 
 @time println("Silver: $(silver(data))")
 # @time println("Gold: $(gold(data))")
