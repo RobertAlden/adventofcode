@@ -38,4 +38,4 @@ const data = readlines("data/2022/day07/input.txt")
 @time println(gold(test))
 
 @time println("Silver: $(silver(data))")
-# @time println("Gold: $(gold(data))")
+@time println("Gold: $(gold(data))")
