@@ -34,10 +34,8 @@ end
 const test = readlines("data/2022/day07/test.txt")
 const data = readlines("data/2022/day07/input.txt")
 
-@time println("Silver (test): $(silver(test))")
-@time println("Gold (test): $(gold(test))")
+@time println(silver(test))
+@time println(gold(test))
 
-@time println("Silver (real): $(silver(data))")
-@time println("Gold (real): $(gold(data))")
-
-
+@time println("Silver: $(silver(data))")
+# @time println("Gold: $(gold(data))")
