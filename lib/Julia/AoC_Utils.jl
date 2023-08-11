@@ -2,7 +2,7 @@ module AoC_Utils
 
 export windowed, parse_into_struct, chunk_items, splitmap, memoize
 
-windowed(arr, n) = @views [arr[i:(i+n-1)] for i in firstindex(arr):lastindex(arr)-n+1]
+windowed(arr, n) = [arr[i:(i+n-1)] for i in firstindex(arr):lastindex(arr)-n+1]
 
 function parse_into_struct(str::String, datatype, seps::String=nothing)
     ### Parse a string into a struct, using the field types as a guide
